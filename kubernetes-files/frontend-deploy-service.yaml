@@ -15,22 +15,29 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: frontend
-        image: 588738573030.dkr.ecr.us-west-2.amazonaws.com/frontend:latest
-        ports:
-        - containerPort: 80
+        - name: frontend
+          image: 588738573030.dkr.ecr.us-west-2.amazonaws.com/frontend:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
-metadata: 
+metadata:
   name: frontend
 spec:
   ports:
-  - port: 80
-    targetPort: 80
-    protocol: TCP
-      #    nodePort: 31004  # Optional: Specify a nodePort if you want a fixed port
+    - port: 80
+      targetPort: 80
+      protocol:
+        TCP
+        #    nodePort: 31004  # Optional: Specify a nodePort if you want a fixed port
   selector:
-    app: frontend  # Ensure this matches the labels in the Deployment
+    app: frontend # Ensure this matches the labels in the Deployment
   type: LoadBalancer
-
